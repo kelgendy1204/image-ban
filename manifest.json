@@ -2,14 +2,23 @@
     "manifest_version": 2,
     "name": "Images Ban",
     "version": "1.0",
+
     "description": "Ban images and iframes",
     "icons": { "16": "no-camera.png", "48": "no-camera.png", "128": "no-camera.png" },
+
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    },
+
+    "browser_action": {},
+
     "web_accessible_resources": ["no-image.png"],
-    "permissions": ["<all_urls>"],
+    "permissions": ["<all_urls>", "storage", "tabs"],
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
-            "js": ["background.js"]
+            "js": ["content-script.js"]
         }
     ]
 }

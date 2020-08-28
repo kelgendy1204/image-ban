@@ -1,15 +1,29 @@
-document.querySelectorAll('*').forEach(el => {
-    el.style.backgroundImage = 'none';
+'use strict';
+
+function addBadge(status) {
+    chrome.browserAction.setBadgeText({
+        text: status
+    });
+}
+
+chrome.runtime.onInstalled.addListener(() => {
+    chrome.storage.sync.get('status', function(data) {
+        const currentStatus = data.status;
+        addBadge(currentStatus);
+    });
 });
 
-document.querySelectorAll('img, iframe').forEach(el => {
-    const { width, height } = el.getBoundingClientRect();
-    const newItem = document.createElement('div');
-    newItem.style.width = `${width}px`;
-    newItem.style.height = `${height}px`;
-    newItem.style.backgroundPosition = 'center center';
-    newItem.style.backgroundSize = 'contain';
-    newItem.style.backgroundRepeat = 'no-repeat';
-    newItem.style.backgroundImage = `url(${chrome.extension.getURL('no-image.png')})`;
-    el.parentNode.replaceChild(newItem, el);
-});
+function toggleFeature() {
+    chrome.storage.sync.get('status', function(data) {
+        const currentStatus = data.status;
+        if (currentStatus === 'ON') {
+            chrome.storage.sync.set({ status: 'OFF' }, () => addBadge('OFF'));
+        } else {
+            chrome.storage.sync.set({ status: 'ON' }, () => addBadge('ON'));
+        }
+
+        chrome.tabs.reload();
+    });
+}
+
+chrome.browserAction.onClicked.addListener(toggleFeature);
