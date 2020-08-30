@@ -20,7 +20,7 @@ function copyNodeStyle(sourceNode, targetNode) {
                 el.style.backgroundImage = 'none';
             });
 
-            document.querySelectorAll('img, iframe').forEach(el => {
+            document.querySelectorAll('img, iframe, video').forEach(el => {
                 // const { width, height } = el.getBoundingClientRect();
                 const newItem = document.createElement('div');
                 copyNodeStyle(el, newItem);
