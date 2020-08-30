@@ -1,5 +1,16 @@
 'use strict';
 
+function copyNodeStyle(sourceNode, targetNode) {
+    const computedStyle = window.getComputedStyle(sourceNode);
+    Array.from(computedStyle).forEach(key =>
+        targetNode.style.setProperty(
+            key,
+            computedStyle.getPropertyValue(key),
+            computedStyle.getPropertyPriority(key)
+        )
+    );
+}
+
 (function() {
     chrome.storage.sync.get('status', function(data) {
         const currentStatus = data.status;
@@ -10,10 +21,11 @@
             });
 
             document.querySelectorAll('img, iframe').forEach(el => {
-                const { width, height } = el.getBoundingClientRect();
+                // const { width, height } = el.getBoundingClientRect();
                 const newItem = document.createElement('div');
-                newItem.style.width = `${width}px`;
-                newItem.style.height = `${height}px`;
+                copyNodeStyle(el, newItem);
+                // newItem.style.width = `${width}px`;
+                // newItem.style.height = `${height}px`;
                 newItem.style.backgroundPosition = 'center center';
                 newItem.style.backgroundSize = 'contain';
                 newItem.style.backgroundRepeat = 'no-repeat';
