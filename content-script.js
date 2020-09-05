@@ -13,16 +13,9 @@
     }
 
     function replaceImages() {
-        document.querySelectorAll('*').forEach(el => {
-            el.style.backgroundImage = 'none';
-        });
-
         document.querySelectorAll('img, iframe').forEach(el => {
-            // const { width, height } = el.getBoundingClientRect();
             const newItem = document.createElement('div');
             copyNodeStyle(el, newItem);
-            // newItem.style.width = `${width}px`;
-            // newItem.style.height = `${height}px`;
             newItem.style.backgroundPosition = 'center center';
             newItem.style.backgroundSize = 'contain';
             newItem.style.backgroundRepeat = 'no-repeat';
